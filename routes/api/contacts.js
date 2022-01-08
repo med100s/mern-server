@@ -10,9 +10,9 @@ const { check, validationResult } = require("express-validator/check");
 // @access        Public
 router.get("/", auth, async (req, res) => {
     try {
-      const contacts = await Contacts.findOne({ user: req.user.id }).populate(
+      const contacts = await Contacts.find({ user: req.user.id }).populate(
         "user", // from the "user" collection, get "name" and "avatar" as well
-        ["name", "avatar"]
+        ["name", "email"]
       );
   
       // No contacts found?
@@ -34,15 +34,7 @@ router.get("/", auth, async (req, res) => {
 router.post(
     "/",
     [
-      auth,
-      [
-        check("status", "Status is required")
-          .not()
-          .isEmpty(),
-        check("skills", "Skills is required")
-          .not()
-          .isEmpty()
-      ]
+      auth
     ],
     async (req, res) => {
       const errors = validationResult(req);
@@ -51,78 +43,43 @@ router.post(
       }
   
       const {
-        company,
-        website,
-        location,
-        bio,
-        status,
-        githubusername,
-        skills,
-        youtube,
-        facebook,
-        twitter,
-        instagram,
-        linkedin
+        status
       } = req.body;
   
       // Build contacts object
       const contactsFields = {};
       contactsFields.user = req.user.id;
-      if (company) contactsFields.company = company;
-      if (website) contactsFields.website = website;
-      if (location) contactsFields.location = location;
-      if (bio) contactsFields.bio = bio;
       if (status) contactsFields.status = status;
-      if (githubusername) contactsFields.githubusername = githubusername;
-      if (skills) {
-        contactsFields.skills = skills.split(",").map(skill => skill.trim());
-      }
-  
       // Build social object
-      contactsFields.social = {};
-      if (youtube) contactsFields.social.youtube = youtube;
-      if (twitter) contactsFields.social.twitter = twitter;
-      if (facebook) contactsFields.social.facebook = facebook;
-      if (linkedin) contactsFields.social.linkedin = linkedin;
-      if (instagram) contactsFields.social.instagram = instagram;
   
       try {
         let contacts = await Contacts.findOne({ user: req.user.id });
-  
-        if (contacts) {
-          // Update contacts
-          contacts = await Contacts.findOneAndUpdate(
-            { user: req.user.id },
-            { $set: contactsFields },
-            { new: true }
-          );
-  
-          return res.json(contacts);
-        }
+        let newContact = await Contacts.create({ user: req.user.id});
+        
   
         // If contacts is not found, let's create it
-        contacts = new Contacts(contactsFields);
-        await contacts.save();
-        res.json(contacts);
-      } catch {
+        newContact = new Contacts(contactsFields);
+        await newContact.save();
+        res.json(newContact);
+      } catch (err){
         console.error(err.message);
         res.status(500).send("Server Error");
       }
     }
   );
   
-  // @route         GET api/contacts
-  // @description   Get all contactss
-  // @access        Public
-  router.get("/", async (req, res) => {
-    try {
-      const contactss = await Contacts.find().populate("user", ["name", "avatar"]);
-      res.json(contactss);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server Error");
-    }
-  });
+  // // @route         GET api/contacts
+  // // @description   Get all contactss
+  // // @access        Public
+  // router.get("/", async (req, res) => {
+  //   try {
+  //     const contactss = await Contacts.find().populate("user", ["name", "avatar"]);
+  //     res.json(contactss);
+  //   } catch (err) {
+  //     console.error(err.message);
+  //     res.status(500).send("Server Error");
+  //   }
+  // });
   
   // @route         GET api/contacts/user/:user_id
   // @description   Get contacts by user ID
