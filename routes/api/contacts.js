@@ -29,7 +29,7 @@ router.get("/", auth, async (req, res) => {
 
 
 // @route         POST api/contacts/
-// @description   Create or update user contacts
+// @description   Create user contacts
 // @access        Private
 router.post(
     "/",
@@ -53,10 +53,10 @@ router.post(
       // Build social object
   
       try {
-        let contacts = await Contacts.findOne({ user: req.user.id });
-        let newContact = await Contacts.create({ user: req.user.id});
+        let newContact = await Contacts.findOne({ user: req.user.id });
+        // let newContact = await Contacts.create({ user: req.user.id });
         
-  
+        console.log(newContact);
         // If contacts is not found, let's create it
         newContact = new Contacts(contactsFields);
         await newContact.save();
@@ -111,12 +111,12 @@ router.post(
     try {
       // @todo - remove users posts
       // Remove contacts
-      await Contacts.findOneAndRemove({ user: req.user.id });
+      await Contacts.find({ user: req.user.id }).remove().exec();
   
       // Remove user
-      await User.findOneAndRemove({ _id: req.user.id });
+      // await User.findOneAndRemove({ _id: req.user.id });
   
-      res.json({ msg: "User deleted" });
+      res.json({ msg: "Contacts deleted" });
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
@@ -183,23 +183,14 @@ router.post(
     }
   );
   
-  // @route         DELETE api/contacts/experience/:exp_id
+  // @route         DELETE api/contacts/:contact_id
   // @description   Delete experience from contacts
   // @access        Private
-  router.delete("/experience/:exp_id", auth, async (req, res) => {
+  router.delete("/:contact_id", auth, async (req, res) => {
     try {
-      const contacts = await Contacts.findOne({ user: req.user.id });
-  
-      // Get remove index
-      const removeIndex = contacts.experience
-        .map(item => item.id)
-        .indexOf(req.params.exp_id);
-  
-      contacts.experience.splice(removeIndex, 1);
-  
-      await contacts.save();
-  
-      res.json(contacts);
+      await Contacts.findOne({ user: req.user.id, _id: req.params.contact_id }).remove().exec();
+      
+      res.json("deleted successfuly "+req.params.contact_id);
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error.");
