@@ -5,7 +5,8 @@
   "main": "server.js",
   "homepage": "src/index",
   "scripts": {
-    "start": "nodemon server.js"
+    "start": "nodemon server.js",
+    "build": "netlify-lambda build express"
   },
   "dependencies": {
     "bcryptjs": "2.4.3",
@@ -16,6 +17,7 @@
     "gravatar": "1.8.0",
     "jsonwebtoken": "8.5.1",
     "mongoose": "5.9.2",
+    "netlify-lambda": "^2.0.15",
     "request": "2.88.2"
   },
   "devDependencies": {
