@@ -4,6 +4,9 @@
   "description": "",
   "main": "server.js",
   "homepage": "src/index",
+  "engines": {
+    "node": "16.13.1"
+  },
   "scripts": {
     "start": "nodemon server.js"
   },
