@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require("express");
 const app = express();
+const serverless = require("serverless-http");
 const connectDB = require("./config/db");
 
 // Connect database
@@ -18,14 +19,18 @@ app.use((req, res, next) => {
 
 app.get("/", (req, res) => res.send("API Running"));
 
+app.post("/", (req, res) => res.json({ postBody: req.body }));
 // Define Routes
-app.use("/api/users", require("./routes/api/users"));
-app.use("/api/auth", require("./routes/api/auth"));
-app.use("/api/profile", require("./routes/api/profile"));
-app.use("/api/contacts", require("./routes/api/contacts"));
+app.use("/.netlify/functions/api/users", require("./routes/api/users"));
+app.use("/.netlify/functions/api/auth", require("./routes/api/auth"));
+app.use("/.netlify/functions/api/profile", require("./routes/api/profile"));
+app.use("/.netlify/functions/api/contacts", require("./routes/api/contacts"));
 
 const PORT = process.env.PORT || 8080;
 
 app.listen(PORT, () =>
   console.log(`🏎  ✔ Server started on port ${PORT} (/server.js)`)
 );
+
+module.exports = app;
+module.exports.handler = serverless(app);
