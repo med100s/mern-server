@@ -19,6 +19,7 @@ app.use((req, res, next) => {
 
 app.get("/", (req, res) => res.send("API Running"));
 
+app.post("/", (req, res) => res.send(req));
 // Define Routes
 app.use("/.netlify/functions/api/users", require("./routes/api/users"));
 app.use("/.netlify/functions/api/auth", require("./routes/api/auth"));
