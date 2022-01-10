@@ -1,4 +1,4 @@
-const express = __non_webpack_require__("express");
+const express = require("express");
 const router = express.Router();
 const auth = require("../../middleware/auth");
 const Contacts = require("../../models/Contacts");

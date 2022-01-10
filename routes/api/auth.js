@@ -1,9 +1,9 @@
-const express = __non_webpack_require__("express");
+const express = require("express");
 const router = express.Router();
 const auth = require("../../middleware/auth");
 const User = require("../../models/User");
-const jwt = __non_webpack_require__("jsonwebtoken");
-const bcrypt = __non_webpack_require__("bcryptjs");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 const { check, validationResult } = require("express-validator/check");
 
 // @route         GET api/auth
