@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+const jwt = __non_webpack_require__("jsonwebtoken");
 
 module.exports = function(req, res, next) {
   // Get token from header

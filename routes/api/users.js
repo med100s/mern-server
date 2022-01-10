@@ -1,9 +1,9 @@
-const express = require("express");
+const express = __non_webpack_require__("express");
 const router = express.Router();
-const gravatar = require("gravatar");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { check, validationResult } = require("express-validator/check");
+const gravatar = __non_webpack_require__("gravatar");
+const bcrypt = __non_webpack_require__("bcryptjs");
+const jwt = __non_webpack_require__("jsonwebtoken");
+const { check, validationResult } = __non_webpack_require__("express-validator/check");
 
 const User = require("../../models/User");
 
