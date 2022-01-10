@@ -1,4 +1,7 @@
 require('dotenv').config();
+__non_webpack_require__("babel-core/register");
+__non_webpack_require__("babel-polyfill");
+
 const express = __non_webpack_require__("express");
 const serverless = __non_webpack_require__("serverless-http");
 
