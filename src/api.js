@@ -20,6 +20,7 @@ router.get("/", (req, res) => {
 });
 app.use(express.json({ extended: false }));
 
+app.post("/", (req, res) => res.json({ postBody: req.body }));
 app.use((req, res, next) => {
   res.append('Access-Control-Allow-Origin', ['*']);
   res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
