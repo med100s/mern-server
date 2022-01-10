@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = __non_webpack_require__("express");
 const serverless = __non_webpack_require__("serverless-http");
 
-const connectDB = __non_webpack_require__("../config/db");
+const connectDB = require("../config/db");
 
 // Connect database
 connectDB();
